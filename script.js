@@ -48,6 +48,8 @@ const mainDiv = document.querySelector('.main-div')
 const triangle = document.querySelector('.triangle')
 const rotatedTriangle = document.querySelector('.rotated-triangle')
 const input = document.querySelector('input')
+const errorElement = document.createElement("p")
+
 
 let checkNumberRegex = /^[0-9]+$/
 
@@ -56,11 +58,12 @@ let button
 input.addEventListener('change', (e) => {
     inputValue = input.value
     input.value = ""
-
+    errorElement.innerHTML = ""
     if(checkNumberRegex.test(inputValue)){
         console.log(inputValue)
         const renderTriangle = new TriangleRender(triangle, parseInt(inputValue))
         renderTriangle.render('vertical')
+        triangle.style.cursor = "pointer"
         rotatedTriangle.innerHTML = ""
         if (!button) {
             button = document.createElement('button')
@@ -72,5 +75,13 @@ input.addEventListener('change', (e) => {
                 rotateTriangle.render('rotate')
             })
         }
+    } else {
+        errorElement.innerHTML = "enter valid number/text"
+        mainDiv.appendChild(errorElement)
     }
+})
+
+triangle.addEventListener('click', () => {
+    const rotateTriangle = new TriangleRender(rotatedTriangle, parseInt(inputValue))
+    rotateTriangle.render('rotate')
 })
